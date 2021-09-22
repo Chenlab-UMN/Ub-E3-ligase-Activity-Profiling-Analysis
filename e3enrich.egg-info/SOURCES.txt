@@ -1,0 +1,14 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+e3enrich/E3dict.csv
+e3enrich/__init__.py
+e3enrich/e3enrich.py
+e3enrich/unigenedict.csv
+e3enrich.egg-info/PKG-INFO
+e3enrich.egg-info/SOURCES.txt
+e3enrich.egg-info/dependency_links.txt
+e3enrich.egg-info/requires.txt
+e3enrich.egg-info/top_level.txt

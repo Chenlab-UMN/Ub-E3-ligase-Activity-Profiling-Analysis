@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: e3enrich
+Version: 1.0.0
+Summary: E3ligase enrichment Python package
+Home-page: UNKNOWN
+Author: Yao Gong
+Author-email: gong0062@umn.edu
+License: UNKNOWN
+Keywords: python,ubiquitination,e3ligase,enrichment
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6, <4
+Description-Content-Type: text/plain
+License-File: LICENSE
+
+Python package that perform E3 ligase enrichment based on protein ubiquitination quantificantion
+

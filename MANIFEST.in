@@ -1,0 +1,5 @@
+#include README.rst
+
+# Include the data files
+include   e3enrich/E3dict.csv
+include   e3enrich/unigenedict.csv
