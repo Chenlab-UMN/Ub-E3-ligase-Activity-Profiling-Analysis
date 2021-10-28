@@ -8,10 +8,10 @@ here = pathlib.Path(__file__).parent.resolve()
 #long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
-    name='e3enrich',  
+    name='ube3_apa',  
     version='1.0.0', 
-    description='E3ligase enrichment Python package',  
-    long_description="Python package that perform E3 ligase enrichment based on protein ubiquitination quantificantion",
+    description='Ub E3 ligase Activity Profiling Analysis',  
+    long_description="UbE3-APA identifies significantly activated or suppressed E3 ligases based on quantitative ubiquitylome proteomics datasets",
     long_description_content_type='text/plain', 
     author='Yao Gong', 
     author_email='gong0062@umn.edu',  

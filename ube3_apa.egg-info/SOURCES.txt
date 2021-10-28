@@ -1,0 +1,14 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+ube3_apa/E3dict.csv
+ube3_apa/__init__.py
+ube3_apa/e3enrich.py
+ube3_apa/unigenedict.csv
+ube3_apa.egg-info/PKG-INFO
+ube3_apa.egg-info/SOURCES.txt
+ube3_apa.egg-info/dependency_links.txt
+ube3_apa.egg-info/requires.txt
+ube3_apa.egg-info/top_level.txt

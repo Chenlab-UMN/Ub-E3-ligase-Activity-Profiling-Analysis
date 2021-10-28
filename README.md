@@ -1,18 +1,18 @@
 Implementation of the software
-Our e3enrich python package can be installed through executing following command in a python console:
-python3 -m pip install e3enrich
+Our ube3_apa python package can be installed through executing following command in a python console:
+python3 -m pip install ube3_apa
 After successful installation, you may test the code with the testing data on our GitHub website.
 There are some example codes:
 #########################################
-import e3enrich
+import ube3_apa
 input_directory = “directory_of_testdata_folder”
 #standard
-e3enrich.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”1”, grouped=False, output_ratio=True, log2trans=False)	
+ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”1”, grouped=False, output_ratio=True, log2trans=False)	
 #grouped
-e3enrich.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”2”, grouped=True, output_ratio=True, log2trans=False)	
+ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”2”, grouped=True, output_ratio=True, log2trans=False)	
 
 #with protein normalization
-e3enrich.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”3”, proratio_dir=input_directory+”/testdata/proteinratio_testdata.csv”, grouped=False, output_ratio=True, log2trans=False)	
+ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”3”, proratio_dir=input_directory+”/testdata/proteinratio_testdata.csv”, grouped=False, output_ratio=True, log2trans=False)	
 #########################################
 After running the code above, you will find some csv files in the output directory. The enrichment p-values are listed in files initiated with “E3enrichment”, and there are also other related data such as number of substrates found and average site ratios included.
 
