@@ -9,7 +9,7 @@ here = pathlib.Path(__file__).parent.resolve()
 
 setup(
     name='ube3_apa',  
-    version='1.0.0', 
+    version='1.1.0', 
     description='Ub E3 ligase Activity Profiling Analysis',  
     long_description="UbE3-APA identifies significantly activated or suppressed E3 ligases based on quantitative ubiquitylome proteomics datasets",
     long_description_content_type='text/plain', 

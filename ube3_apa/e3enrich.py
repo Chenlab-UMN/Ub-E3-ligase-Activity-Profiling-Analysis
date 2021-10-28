@@ -178,7 +178,7 @@ def E3ligase_enrichment(siteratiodf,E3dict,prolevel):
             continue
         siteavg = statistics.mean(subdf['siteratio'])
         sampleavglist = []
-        for i in range(0,100):
+        for i in range(0,10000):
             randsample = random.choices(ratio_sample, k=sitecount)
             sampleavglist.append(statistics.mean(randsample))
         sampleavg = statistics.mean(sampleavglist)
@@ -237,7 +237,7 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
         return()
    
     
-   
+    print("Analyzing data of experiment "+exp_label)
     #############################################################################################
     #gather ratios from input files and output ratio files 
     if(proratio_dir=="None"):
@@ -289,11 +289,11 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
             siteE3enrichdf.loc[i,'substrates'] = ';'.join(siteE3enrichdf.loc[i,'substrates'])
             siteE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(siteE3enrichdf.loc[i,'substrate_ratio'])
         if (normbypro == True):
-                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_normalized_by_protein_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_normalized_by_protein_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
         else:   
-                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
+                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
     else:
         for i in proE3enrichdf.index:  
             proE3enrichdf.loc[i,'substrates'] = ';'.join(proE3enrichdf.loc[i,'substrates'])
@@ -302,11 +302,11 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
             siteE3enrichdf.loc[i,'substrates'] = ';'.join(siteE3enrichdf.loc[i,'substrates'])
             siteE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(siteE3enrichdf.loc[i,'substrate_ratio'])
         if (normbypro == True):
-                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
         else:   
-                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
+                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
 
     return()
 

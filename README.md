@@ -2,7 +2,7 @@ Implementation of the software
 Our ube3_apa python package can be installed through executing following command in a python console:
 python3 -m pip install ube3_apa
 After successful installation, you may test the code with the testing data on our GitHub website.
-There are some example codes:
+There are some example codes or you may start with test_code.py:
 #########################################
 import ube3_apa
 input_directory = “directory_of_testdata_folder”
@@ -14,7 +14,7 @@ ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.
 #with protein normalization
 ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”3”, proratio_dir=input_directory+”/testdata/proteinratio_testdata.csv”, grouped=False, output_ratio=True, log2trans=False)	
 #########################################
-After running the code above, you will find some csv files in the output directory. The enrichment p-values are listed in files initiated with “E3enrichment”, and there are also other related data such as number of substrates found and average site ratios included.
+After running the code above, you will find some csv files in the output directory. The enrichment p-values are listed in files initiated with “UbE3_APA”, and there are also other related data such as number of substrates found and average site ratios included.
 
 
 
