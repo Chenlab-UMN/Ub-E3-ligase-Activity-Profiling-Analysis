@@ -1,10 +1,13 @@
 Instructions for software installation and usage
-Our ube3_apa python package can be installed through executing the following command in a python console:
-python3 -m pip install e3enrich
+
+Our ube3_apa python package can be installed through executing the following command in a python console: python3 -m pip install ube3_apa
+
 After successful installation, you may test the code with the testing data on our GitHub website: https://github.umn.edu/chen-lab/Ub-E3-ligase-Activity-Profiling-Analysis
 
 There are some example codes or you may start with test_code.py:
+
 #########################################
+
 import ube3_apa
 input_directory = “directory_of_testdata_folder”
 
@@ -16,7 +19,9 @@ ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.
 
 #with protein normalization
 ube3_apa.e3enrich(siteratio_dir=input_directory+”/testdata/siteratio_testdata.csv”, input_type=”UniprotAC”, output_dir=”desired_output_directory”, exp_label=”3”, proratio_dir=input_directory+”/testdata/proteinratio_testdata.csv”, grouped=False, output_ratio=True, log2trans=False)	
+
 #########################################
+
 After running the code above, you will find some csv files in the output directory. The enrichment p-values are listed in files initiated with “UbE3_APA”, and there are also other related data such as the number of substrates found and average site ratios included.
 
 
@@ -24,7 +29,8 @@ After running the code above, you will find some csv files in the output directo
 
 Parameters of e3enrich 
 e3enrich(siteratio_dir, input_type, output_dir, exp_label='', proratio_dir="None", grouped=False, output_ratio=False, log2trans=True) 
-Perform E3 ligase enrichment analysis based on ratio of E3 ligase substrates
+
+Perform Ub E3 ligase activity profiling analysis based on ratio of E3 ligase substrates
 Parameters can be customized through key-value pairs as below.
 
 Parameters:
