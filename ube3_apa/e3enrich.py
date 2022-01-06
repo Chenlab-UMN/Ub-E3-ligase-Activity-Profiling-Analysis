@@ -154,26 +154,6 @@ def E3ligase_enrichment(siteratiodf,E3dict,prolevel):
         sitecount = len(subdf)
         substrate_list = []
         substrate_ratio_list = []
-        # for i in subdf['genename'].values.tolist():
-        #     if (i not in substrate_list):
-        #         substrate_list.append(i)
-        #         substrate_ratio_list.append(i+)
-        if(prolevel == True):
-            for i in subdf.index:
-                if (subdf.loc[i,'genename'] not in substrate_list):
-                     substrate_list.append(subdf.loc[i,'genename'])
-                     substrate_ratio_list.append(subdf.loc[i,'genename']+':'+str(subdf.loc[i,'siteratio']))
-        else:
-            for i in subdf.index:
-                if (subdf.loc[i,'genename'] not in substrate_list):
-                     substrate_list.append(subdf.loc[i,'genename'])
-                try:
-                    substrate_ratio_str = subdf.loc[i,'genename']+'_'+str(int(subdf.loc[i,'position']))
-                except:
-                    substrate_ratio_str = subdf.loc[i,'genename']+'_'+"NaN"
-                if (substrate_ratio_str not in substrate_ratio_list):
-                     substrate_ratio_list.append(substrate_ratio_str+':'+str(subdf.loc[i,'siteratio']))
-            
         if(sitecount<1):  #cannot calculate is there's no data points
             continue
         siteavg = statistics.mean(subdf['siteratio'])
@@ -185,8 +165,28 @@ def E3ligase_enrichment(siteratiodf,E3dict,prolevel):
         samplestd = statistics.stdev(sampleavglist)
         zscore = abs(siteavg-sampleavg)/samplestd
         pvalue = scipy.stats.norm.sf(abs(zscore))*2
+        
+        
+        if(prolevel == True):
+            for i in subdf.index:
+                if (subdf.loc[i,'genename'] not in substrate_list):
+                     substrate_list.append(subdf.loc[i,'genename'])
+                     substrate_ratio_list.append(subdf.loc[i,'genename']+':'+str(np.round(subdf.loc[i,'siteratio'],5)))
+
+        else:
+            for i in subdf.index:
+                if (subdf.loc[i,'genename'] not in substrate_list):
+                     substrate_list.append(subdf.loc[i,'genename'])
+                try:
+                    substrate_ratio_str = subdf.loc[i,'genename']+'_'+str(int(subdf.loc[i,'position']))
+                except:
+                    substrate_ratio_str = subdf.loc[i,'genename']+'_'+"NaN"
+                if (substrate_ratio_str not in substrate_ratio_list):
+                     substrate_ratio_list.append(substrate_ratio_str+':'+str(np.round(subdf.loc[i,'siteratio'],5)))
+ 
+    
         E3enrichdf.loc[idx] = [E3ligase,sitecount,siteavg,sampleavg,samplestd,pvalue,substrate_list,substrate_ratio_list]
-        idx = idx+1      
+        idx = idx+1
     return(E3enrichdf)
 
 
@@ -239,7 +239,7 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
     
     print("Analyzing data of experiment "+exp_label)
     #############################################################################################
-    #gather ratios from input files and output ratio files 
+    #gather ratios from input filesand perform enrichment analysis   
     if(proratio_dir=="None"):
         normbypro = False
         proratiodict = {}
@@ -248,32 +248,44 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
         proratiodict = read_protein_groups(proratio_dir)
     siteratiodf = read_ubiquitin_sites(siteratio_dir,proratiodict,unitogenedict,input_type,normbypro,log2trans)
     avgsiteratiodf = sitetoavgproratio(siteratiodf,input_type) #from site ratio to average protein ratio
+    
+    proE3enrichdf = E3ligase_enrichment(avgsiteratiodf,E3dict,True)
+    siteE3enrichdf = E3ligase_enrichment(siteratiodf,E3dict,False)
+    
+    #############################################################################################
+    #export site level ratio file, protein level ratio file and E3_ubiprotein linkage file  
     if(ratio_output==True):
         siteratiodf.to_csv(output_dir+'/site_level_ratio'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
         outavgsiteratiodf = avgsiteratiodf
         for i in outavgsiteratiodf.index: 
+            outavgsiteratiodf.loc[i, 'number_of_sites'] = len(outavgsiteratiodf.loc[i,'positions'])
             string1 = []
             for float in outavgsiteratiodf.loc[i, 'positions']:
                 if(np.isnan(float)):
                     string1.append("NaN")
                 else:
                     string1.append(str(int(float)))
+            #string1 = [str(int(float)) for float in outavgsiteratiodf.loc[i, 'positions']]
             outavgsiteratiodf.loc[i,'positions'] = ';'.join(string1)
             string2 = [str(float) for float in outavgsiteratiodf.loc[i, 'siteratios']]
             outavgsiteratiodf.loc[i,'siteratios'] = ';'.join(string2)
+            outavgsiteratiodf = outavgsiteratiodf.rename(columns={"siteratio": "average_siteratio"})
         outavgsiteratiodf.to_csv(output_dir+'/protein_level_ratio'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-     
+        
+        linkdf =  pd.DataFrame(columns = ['e3ligase','substrate_protein'])
+        linkidx = 0
+        for i in proE3enrichdf.index:
+            for j in proE3enrichdf.loc[i,'substrates']:
+                linkdf.loc[linkidx,'e3ligase'] = proE3enrichdf.loc[i,'e3ligase']
+                linkdf.loc[linkidx,'substrate_protein'] = j
+                linkidx = linkidx+1
+        linkdf.to_csv(output_dir+'/e3_sub_network'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
         
     #############################################################################################
-    #E3ligase enrichment based on different parameters 
+    #organize E3ligase enrichment results based on different parameters 
     #para1: grouped or not
     #para2: norm by protein level or not
-    if(len(avgsiteratiodf)<=1):
-        print("Sample size too small for analysis ")
-        return()
-    
-    proE3enrichdf = E3ligase_enrichment(avgsiteratiodf,E3dict,True)
-    siteE3enrichdf = E3ligase_enrichment(siteratiodf,E3dict,False)
+
 
     if (grouped == True):
         proE3enrichdf = group_siteratiodf(proE3enrichdf)
@@ -283,31 +295,34 @@ def e3enrich(siteratio_dir,input_type,output_dir,exp_label='',proratio_dir="None
             proE3enrichdf.loc[i,'e3ligase_group'] = ';'.join(proE3enrichdf.loc[i,'e3ligase_group'])
             proE3enrichdf.loc[i,'substrates'] = ';'.join(proE3enrichdf.loc[i,'substrates'])
             proE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(proE3enrichdf.loc[i,'substrate_ratio'])
+
         for i in siteE3enrichdf.index: 
             siteE3enrichdf.loc[i,'leading_e3ligase'] = ';'.join(siteE3enrichdf.loc[i,'leading_e3ligase'])
             siteE3enrichdf.loc[i,'e3ligase_group'] = ';'.join(siteE3enrichdf.loc[i,'e3ligase_group'])
             siteE3enrichdf.loc[i,'substrates'] = ';'.join(siteE3enrichdf.loc[i,'substrates'])
             siteE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(siteE3enrichdf.loc[i,'substrate_ratio'])
+
         if (normbypro == True):
-                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_normalized_by_protein_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_normalized_by_protein_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_normalized_by_protein_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
         else:   
-                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
+                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_grouped'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
     else:
         for i in proE3enrichdf.index:  
             proE3enrichdf.loc[i,'substrates'] = ';'.join(proE3enrichdf.loc[i,'substrates'])
             proE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(proE3enrichdf.loc[i,'substrate_ratio'])
+
         for i in siteE3enrichdf.index:  
             siteE3enrichdf.loc[i,'substrates'] = ';'.join(siteE3enrichdf.loc[i,'substrates'])
             siteE3enrichdf.loc[i,'substrate_ratio'] = ';'.join(siteE3enrichdf.loc[i,'substrate_ratio'])
-        if (normbypro == True):
-                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-        else:   
-                proE3enrichdf.to_csv(output_dir+'/UbE3_APA_protein_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
-                siteE3enrichdf.to_csv(output_dir+'/UbE3_APA_site_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')    
 
+        if (normbypro == True):
+                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level_normalized_by_protein'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+        else:   
+                proE3enrichdf.to_csv(output_dir+'/E3enrichment_protein_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8') 
+                siteE3enrichdf.to_csv(output_dir+'/E3enrichment_site_level'+str(exp_label)+'.csv', sep=',',index = False, encoding='utf-8')  
     return()
 
 
