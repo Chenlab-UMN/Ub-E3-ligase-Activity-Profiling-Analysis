@@ -9,7 +9,7 @@ here = pathlib.Path(__file__).parent.resolve()
 
 setup(
     name='ube3_apa',  
-    version='1.2.0', 
+    version='1.3.0', 
     description='Ub E3 ligase Activity Profiling Analysis',  
     long_description="UbE3-APA identifies significantly activated or suppressed E3 ligases based on quantitative ubiquitylome proteomics datasets",
     long_description_content_type='text/plain', 
@@ -33,7 +33,9 @@ setup(
     install_requires=['numpy>1.16.2',
 			'pandas>0.24.1',    
 			'statistics',
-			'scipy>1.6.1'],  
+			'scipy>1.6.1',
+			'tk',
+			'thread6'		],  
 
 #    package_data={ "": ['unigenedict.csv','E3dict.csv'],},
 

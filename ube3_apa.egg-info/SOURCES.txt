@@ -6,6 +6,9 @@ setup.py
 ube3_apa/E3dict.csv
 ube3_apa/__init__.py
 ube3_apa/e3enrich.py
+ube3_apa/gui.py
+ube3_apa/gui_for_maxqt.py
+ube3_apa/maxqt2ube3.py
 ube3_apa/unigenedict.csv
 ube3_apa.egg-info/PKG-INFO
 ube3_apa.egg-info/SOURCES.txt
