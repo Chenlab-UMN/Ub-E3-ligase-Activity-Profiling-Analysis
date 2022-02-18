@@ -1,5 +1,0 @@
-#include README.rst
-
-# Include the data files
-include   ube3_apa/E3dict.csv
-include   ube3_apa/unigenedict.csv
