@@ -18,7 +18,11 @@ class PrintConsole():
         pass
 
 if __name__ == '__main__':
-
+    
+    
+    print('gui_for_maxquant.exe started')
+    
+    
     window = tk.Tk()
     window.title("UbE3-APA")
     window.geometry('600x600')
