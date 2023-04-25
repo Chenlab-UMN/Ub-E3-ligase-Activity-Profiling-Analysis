@@ -15,15 +15,15 @@ Next, there are different ways the analysis can be run.
 
 ## Standard Analysis
 
-    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '1', grouped = False, output_ratio = True, log2trans = False)
+    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '1', grouped = False, ratio_output = True, log2trans = False)
 
 ## Grouped Analysis
 
-    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '2', grouped = True, output_ratio = True, log2trans = False)
+    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '2', grouped = True, ratio_output = True, log2trans = False)
 
 ## Analysis with Protein Normalization
 
-    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '3', proratio_dir = input_directory + '/testdata/proteinratio_testdata.csv', grouped = False, output_ratio = True, log2trans = False)
+    ube3_apa.e3enrich(siteratio_dir = input_directory + '/testdata/siteratio_testdata.csv', input_type = 'UniprotAC', output_dir = '<desired_output_directory>', exp_label = '3', proratio_dir = input_directory + '/testdata/proteinratio_testdata.csv', grouped = False, ratio_output = True, log2trans = False)
 
 After running the code above, you will find some csv files in the output directory. The enrichment p-values are listed in files initiated with “UbE3_APA”, and there are also other related data such as the number of substrates found and average site ratios included.
 
